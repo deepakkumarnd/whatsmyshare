@@ -1,0 +1,57 @@
+<div data-controller="expense-form">
+  <%= simple_form_for :expense_form, { url: expenses_path, method: :post, html: { name: "expense" } } do |form| %>
+    <% if expense.errors.any? %>
+      <div style="color: red">
+        <h2><%= pluralize(expense.errors.count, "error") %> prohibited this expense from being saved:</h2>
+
+        <ul>
+          <% expense.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <template data-expense-form-target="addPayerTemplate">
+      <div class="flex gap-2">
+        <%= form.input :payer, input_html: { class: "input-text m-2", placeholder: "Payer name eg: Anoop", name: "payers[][name]" } %>
+        <%= form.input :amount, input_html: { class: "input-text m-2", placeholder: "Amount contributed by Anoop eg: 1000", name: "payers[][amounts]" } %>
+      </div>
+      <div class="p-2">
+        <%= form.input :exclude, as: :boolean, label: "Exclude this payer from expense", input_html: { class: "input-check mr-2", name: "payers[][exclude]" } %>
+        <div class="text-sm my-2">This user might have paid for an expense without actually having any involvement, for example a friend paid for a bar bill among a group but he himself was not a participant in the expense.</div>
+      </div>
+    </template>
+
+    <template data-expense-form-target="addDebtorTemplate">
+      <div class="flex gap-2">
+        <%= form.input :debtor, input_html: { class: "input-text m-2", placeholder: "Debtor name eg: Deepak", name: "debtors[][name]" } %>
+      </div>
+    </template>
+
+    <div class="box">
+      <%= form.input :description, input_html: { class: "input-text m-2", placeholder: "What's this expense for ?", name: "description" } %>
+    </div>
+
+    <div class="box">
+      <div data-expense-form-target="addPayer"></div>
+      <a data-action="click->expense-form#addPayer" class="link">+ Add payer</a>
+    </div>
+
+    <div class="box">
+      <div class="p-2">
+        <%= form.input :split_equally, as: :boolean, label: "Split equally", checked_value: true, disabled: true,   input_html: { class: "input-check mr-2", checked: "checked", name: "split_equally" } %>
+        <div class="text-sm my-2">Only equal split is supported.</div>
+      </div>
+    </div>
+
+    <div class="box">
+      <div data-expense-form-target="addDebtor"></div>
+      <a data-action="click->expense-form#addDebtor" class="link">+ Add debtor</a>
+    </div>
+
+    <div class="box">
+      <%= form.button :submit, "Create expense", class: "btn btn-primary"  %>
+    </div>
+  <% end %>
+</div>
