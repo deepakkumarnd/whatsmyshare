@@ -1,5 +1,5 @@
 <div data-controller="expense-form">
-  <%= simple_form_for :expense_form, { url: expenses_path, method: :post, html: { name: "expense" } } do |form| %>
+  <%= simple_form_for expense do |form| %>
     <% if expense.errors.any? %>
       <div style="color: red">
         <h2><%= pluralize(expense.errors.count, "error") %> prohibited this expense from being saved:</h2>
@@ -12,25 +12,12 @@
       </div>
     <% end %>
 
-    <template data-expense-form-target="addPayerTemplate">
-      <div class="flex gap-2">
-        <%= form.input :payer, input_html: { class: "input-text m-2", placeholder: "Payer name eg: Anoop", name: "payers[][name]" } %>
-        <%= form.input :amount, input_html: { class: "input-text m-2", placeholder: "Amount contributed by Anoop eg: 1000", name: "payers[][amounts]" } %>
-      </div>
-      <div class="p-2">
-        <%= form.input :exclude, as: :boolean, label: "Exclude this payer from expense", input_html: { class: "input-check mr-2", name: "payers[][exclude]" } %>
-        <div class="text-sm my-2">This user might have paid for an expense without actually having any involvement, for example a friend paid for a bar bill among a group but he himself was not a participant in the expense.</div>
-      </div>
-    </template>
-
-    <template data-expense-form-target="addDebtorTemplate">
-      <div class="flex gap-2">
-        <%= form.input :debtor, input_html: { class: "input-text m-2", placeholder: "Debtor name eg: Deepak", name: "debtors[][name]" } %>
-      </div>
-    </template>
+    <!-- render templates for associated records forms  -->
+    <%= render "expenses/add_payer_form", builder: form %>
+    <%= render "expenses/add_debtor_form", builder: form %>
 
     <div class="box">
-      <%= form.input :description, input_html: { class: "input-text m-2", placeholder: "What's this expense for ?", name: "description" } %>
+      <%= form.input :description, input_html: { class: "input-text m-2", placeholder: "What's this expense for ?" } %>
     </div>
 
     <div class="box">

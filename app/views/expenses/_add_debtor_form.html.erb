@@ -1,0 +1,10 @@
+<template data-expense-form-target="addDebtorTemplate">
+  <%= builder.simple_fields_for :debtors, { child_index: "new-index"} do |f| %>
+    <div class="flex gap-2">
+      <%= f.input :name, input_html: { class: "input-text m-2", placeholder: "Debtor name eg: Deepak", id: "new-index" } %>
+    </div>
+    <div class="p-2 flex justify-end">
+      <%= f.input :_destroy, as: :boolean, label: "Delete", input_html: { class: "input-check mr-2", id: "new-index" } %>
+    </div>
+  <% end %>
+</template>

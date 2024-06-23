@@ -13,6 +13,8 @@ class ExpensesController < ApplicationController
   # GET /expenses/new
   def new
     @expense = Expense.new
+    @expense.payers.build
+    @expense.debtors.build
   end
 
   # GET /expenses/1/edit
@@ -21,13 +23,27 @@ class ExpensesController < ApplicationController
 
   # POST /expenses or /expenses.json
   def create
-    @expense = Expense.new
+    @expense = Expense.new(expense_params)
 
-    Rails.logger.info(expense_params)
-    Rails.logger.info(params)
+    @expense.amount = @expense.payers.map(&:amount).reduce(:+)
+
+    participants_count = @expense.payers.filter { |x| !x.exclude }.length + @expense.debtors.length
+
+    amount_per_participant = @expense.amount / participants_count
+
+    @expense.debtors.each do |debtor|
+      debtor.amount = amount_per_participant
+    end
+
+    @expense.payers.each do |payer|
+      if payer.amount < amount_per_participant
+        diff = amount_per_participant - payer.amount
+        @expense.debtors.build(name: payer.name, amount: diff)
+      end
+    end
 
     respond_to do |format|
-      if false && @expense.save
+      if @expense.save
         format.html { redirect_to expense_url(@expense), notice: "Expense was successfully created." }
         format.json { render :show, status: :created, location: @expense }
       else
@@ -68,6 +84,6 @@ class ExpensesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def expense_params
-      params.permit(:description, { payers: [:name , :amount, :exclude] } , { debtors: [:name] })
+      params.require(:expense).permit(:description, payers_attributes: [:name , :amount, :exclude, :_destroy], debtors: [:name], debtors_attributes: [:name, :_destroy])
     end
 end

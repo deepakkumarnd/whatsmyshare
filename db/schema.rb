@@ -10,31 +10,33 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_22_062859) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_22_153755) do
   create_table "debtors", force: :cascade do |t|
     t.string "name"
     t.decimal "amount", precision: 8, scale: 2, default: "0.0"
-    t.integer "expenses_id", null: false
+    t.integer "expense_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["expenses_id"], name: "index_debtors_on_expenses_id"
+    t.index ["expense_id"], name: "index_debtors_on_expense_id"
   end
 
   create_table "expenses", force: :cascade do |t|
     t.decimal "amount", precision: 8, scale: 2, default: "0.0"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "description"
   end
 
   create_table "payers", force: :cascade do |t|
     t.string "name"
     t.decimal "amount", precision: 8, scale: 2, default: "0.0"
-    t.integer "expenses_id", null: false
+    t.integer "expense_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["expenses_id"], name: "index_payers_on_expenses_id"
+    t.boolean "exclude"
+    t.index ["expense_id"], name: "index_payers_on_expense_id"
   end
 
-  add_foreign_key "debtors", "expenses", column: "expenses_id"
-  add_foreign_key "payers", "expenses", column: "expenses_id"
+  add_foreign_key "debtors", "expenses"
+  add_foreign_key "payers", "expenses"
 end
