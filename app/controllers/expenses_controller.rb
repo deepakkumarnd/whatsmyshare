@@ -1,18 +1,13 @@
 class ExpensesController < ApplicationController
   before_action :set_expense, only: %i[ show edit update destroy ]
-
-  # GET /expenses or /expenses.json
-  def index
-    @expenses = Expense.all
-  end
-
+  before_action :set_expense_group, only: %i[new edit create show update destroy]
   # GET /expenses/1 or /expenses/1.json
   def show
   end
 
   # GET /expenses/new
   def new
-    @expense = Expense.new
+    @expense = @expense_group.expenses.new
     @expense.payers.build
     @expense.debtors.build
   end
@@ -23,7 +18,7 @@ class ExpensesController < ApplicationController
 
   # POST /expenses or /expenses.json
   def create
-    @expense = Expense.new(expense_params)
+    @expense = @expense_group.expenses.new(expense_params)
 
     @expense.amount = @expense.payers.map(&:amount).reduce(:+)
 
@@ -44,11 +39,9 @@ class ExpensesController < ApplicationController
 
     respond_to do |format|
       if @expense.save
-        format.html { redirect_to expense_url(@expense), notice: "Expense was successfully created." }
-        format.json { render :show, status: :created, location: @expense }
+        format.html { redirect_to group_expense_url(@expense_group, @expense), notice: "Expense was successfully created." }
       else
         format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @expense.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -80,6 +73,10 @@ class ExpensesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_expense
       @expense = Expense.find(params[:id])
+    end
+
+    def set_expense_group
+      @expense_group = ExpenseGroup.find(params[:group_id])
     end
 
     # Only allow a list of trusted parameters through.

@@ -3,8 +3,8 @@
 <%= render @expense %>
 
 <div>
-  <%= link_to "Edit this expense", edit_expense_path(@expense) %> |
-  <%= link_to "Back to expenses", expenses_path %>
+  <%= link_to "Edit this expense", edit_group_expense_path(@expense_group, @expense) %> |
+  <%= link_to "Back to expenses", group_path(@expense_group) %>
 
-  <%= button_to "Destroy this expense", @expense, method: :delete %>
+  <%= button_to "Destroy this expense", group_expense_path(@expense_group, @expense), method: :delete %>
 </div>

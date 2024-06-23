@@ -5,7 +5,7 @@
 
 @layer components {
     .btn {
-        @apply inline-block border rounded-lg p-2.5 min-w-32  min-h-2 text-sm text-center;
+        @apply inline-block border rounded p-2.5 min-w-32  min-h-2 text-sm text-center;
         &:hover {
             cursor: pointer;
         }
@@ -48,7 +48,7 @@
     }
 
     .page-title {
-        @apply font-semibold text-2xl tracking-tight text-gray-900;
+        @apply font-semibold text-2xl tracking-tight text-gray-500;
     }
 
     .page-subtitle {
@@ -56,6 +56,10 @@
     }
 
     .text-notice {
-        @apply font-normal text-sm text-notice-100;
+        @apply py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block
+    }
+
+    .subtext {
+        @apply text-sm text-gray-500;
     }
 }

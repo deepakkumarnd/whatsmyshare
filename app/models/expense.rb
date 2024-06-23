@@ -2,6 +2,8 @@ class Expense < ApplicationRecord
   has_many :payers
   has_many :debtors
 
+  belongs_to :expense_group
+
   validates :description, presence: true, length: { minimum: 2, maximum: 256 }
   validates :amount, presence: true, numericality: { greater_than: 0, less_than: 1_0000_0000 }
 

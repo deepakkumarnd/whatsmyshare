@@ -1,0 +1,22 @@
+<div class="w-full">
+  <% if notice.present? %>
+    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
+  <% end %>
+
+  <% content_for :title, "Expense groups" %>
+
+  <div class="flex justify-between items-center box">
+    <h1 class="page-title">My Expense groups</h1>
+    <%= link_to "+ New group", new_group_path, class: "link" %>
+  </div>
+
+  <div class="box">
+    <ul id="expense_groups">
+      <% @expense_groups.each do |expense_group| %>
+        <li class="border-b">
+          <%= render expense_group %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>

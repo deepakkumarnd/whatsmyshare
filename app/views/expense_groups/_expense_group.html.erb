@@ -1,0 +1,4 @@
+<div id="<%= dom_id expense_group %>" class="my-2">
+  <%= link_to expense_group.description, group_path(expense_group), class: "link" %>
+  <small class="subtext"><%= time_ago_in_words(expense_group.created_at) %> ago</small>
+</div>

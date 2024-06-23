@@ -1,0 +1,14 @@
+
+<%= simple_form_for(expense_group, url: group_index_path, method: :post) do |f| %>
+  <%= f.error_notification %>
+  <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
+
+  <div class="box">
+    <%= f.input :description, placeholder: "Example: Varkala trip expenses", input_html: { class: "input-text my-2" } %>
+  </div>
+
+  <div class="box flex gap-2 items-center">
+    <%= f.button :submit, "Create group",class: "btn btn-primary"  %>
+    <%= link_to "Cancel", cancel_link, class: "link" %>
+  </div>
+<% end %>

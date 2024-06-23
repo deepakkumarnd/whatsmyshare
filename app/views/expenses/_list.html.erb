@@ -1,0 +1,9 @@
+<ul>
+  <% expenses.each do |expense| %>
+    <li>
+      <div class="flex justify-between">
+        <span><%= link_to expense.description, group_expense_path(@expense_group, expense), class: "link" %></span><span class="subtext"><%= number_to_currency(expense.amount, precision: 2, unit: "Rs. ") %></span>
+      </div>
+    </li>
+  <% end %>
+</ul>
