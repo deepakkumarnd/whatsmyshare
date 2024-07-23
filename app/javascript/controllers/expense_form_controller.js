@@ -27,6 +27,18 @@ export default class extends Controller {
         this.addDebtorContainer.appendChild(newNode);
     }
 
+    removePayer(event) {
+        const input = event.target.parentElement.querySelector(".delete-payer-input")
+        input.value = "1"
+        input.closest(".payer").classList.add("hidden")
+    }
+
+    removeDebtor(event) {
+        const input = event.target.parentElement.querySelector(".delete-debtor-input")
+        input.value = "1"
+        input.closest(".debtor").classList.add("hidden")
+    }
+
     replaceNewIndex(obj) {
         const timestamp = new Date().getTime();
 

@@ -1,15 +1,18 @@
 <template data-expense-form-target="addPayerTemplate">
   <%= builder.simple_fields_for :payers, { child_index: "new-index"} do |f| %>
-    <div class="flex gap-2">
-      <%= f.input :name, input_html: { class: "input-text m-2", placeholder: "Payer name eg: Anoop", id: "new-index" } %>
-      <%= f.input :amount, input_html: { class: "input-text m-2", placeholder: "Amount contributed by Anoop eg: 1000", id: "new-index" } %>
-    </div>
-    <div class="p-2">
-      <div class="flex justify-between">
-        <%= f.input :exclude, as: :boolean, label: "Exclude this payer from expense", input_html: { class: "input-check mr-2", id: "new-index" } %>
-        <%= f.input :_destroy, as: :boolean, label: "Delete", input_html: { class: "input-check mr-2", id: "new-index" } %>
+    <div class="payer">
+      <div class="flex gap-2">
+        <%= f.input :name, input_html: { class: "input-text m-2", placeholder: "Payer name eg: Anoop", id: "new-index" } %>
+        <%= f.input :amount, input_html: { class: "input-text m-2", placeholder: "Amount contributed by Anoop eg: 1000", id: "new-index" } %>
       </div>
-      <div class="text-sm my-2">This user might have paid for an expense without actually having any involvement, for example a friend paid for a bar bill among a group but he himself was not a participant in the expense.</div>
+      <div class="p-2">
+        <div class="flex justify-between">
+          <%= f.input :exclude, as: :boolean, label: "Exclude this payer from expense", input_html: { class: "input-check mr-2", id: "new-index" } %>
+          <%= f.input :_destroy, as: :hidden, input_html: { class: "input-check mr-2 delete-payer-input", id: "new-index" } %>
+          <%= link_to "Delete", "javascript:void(0);", class: "link", data: { action: "click->expense-form#removePayer" } %>
+        </div>
+        <div class="text-sm my-2">This user might have paid for an expense without actually having any involvement, for example a friend paid for a bar bill among a group but he himself was not a participant in the expense.</div>
+      </div>
     </div>
   <% end %>
 </template>
