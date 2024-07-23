@@ -36,7 +36,7 @@ class ExpenseGroupsController < ApplicationController
   def update
     respond_to do |format|
       if @expense_group.update(expense_group_params)
-        format.html { redirect_to expense_group_url(@expense_group), notice: "Expense group was successfully updated." }
+        format.html { redirect_to group_path(@expense_group), notice: "Expense group was successfully updated." }
         format.json { render :show, status: :ok, location: @expense_group }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -50,7 +50,7 @@ class ExpenseGroupsController < ApplicationController
     @expense_group.destroy!
 
     respond_to do |format|
-      format.html { redirect_to expense_groups_url, notice: "Expense group was successfully destroyed." }
+      format.html { redirect_to group_index_path, notice: "Expense group was successfully destroyed." }
       format.json { head :no_content }
     end
   end

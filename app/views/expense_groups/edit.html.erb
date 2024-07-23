@@ -3,5 +3,5 @@
     <h1 class="page-title">Editing expense group</h1>
   </div>
 
-  <%= render "form", expense_group: @expense_group, cancel_link: group_path(@expense_group) %>
+  <%= render "form", expense_group: @expense_group, cancel_link: group_path(@expense_group), submit_url: group_path(@expense_group), http_method: :patch %>
 </div>

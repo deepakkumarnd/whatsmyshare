@@ -1,10 +1,6 @@
 class ExpensesController < ApplicationController
-  before_action :set_expense, only: %i[ show edit update destroy ]
-  before_action :set_expense_group, only: %i[new edit create show update destroy]
-  # GET /expenses/1 or /expenses/1.json
-  def show
-  end
-
+  before_action :set_expense, only: %i[edit update destroy]
+  before_action :set_expense_group, only: %i[new edit create update destroy]
   # GET /expenses/new
   def new
     @expense = @expense_group.expenses.new
@@ -18,7 +14,7 @@ class ExpensesController < ApplicationController
 
   # POST /expenses or /expenses.json
   def create
-    @expense = @expense_group.expenses.new(expense_params)
+    @expense = @expense_group.expenses.new(create_expense_params)
 
     @expense.amount = @expense.payers.map(&:amount).reduce(:+)
 
@@ -39,7 +35,7 @@ class ExpensesController < ApplicationController
 
     respond_to do |format|
       if @expense.save
-        format.html { redirect_to group_expense_url(@expense_group, @expense), notice: "Expense was successfully created." }
+        format.html { redirect_to group_path(@expense_group), notice: "Expense was successfully created." }
       else
         format.html { render :new, status: :unprocessable_entity }
       end
@@ -49,8 +45,8 @@ class ExpensesController < ApplicationController
   # PATCH/PUT /expenses/1 or /expenses/1.json
   def update
     respond_to do |format|
-      if @expense.update(expense_params)
-        format.html { redirect_to expense_url(@expense), notice: "Expense was successfully updated." }
+      if @expense.update(update_expense_params)
+        format.html { redirect_to group_path(@expense_group), notice: "Expense was successfully updated." }
         format.json { render :show, status: :ok, location: @expense }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -80,7 +76,12 @@ class ExpensesController < ApplicationController
     end
 
     # Only allow a list of trusted parameters through.
-    def expense_params
-      params.require(:expense).permit(:description, payers_attributes: [:name , :amount, :exclude, :_destroy], debtors: [:name], debtors_attributes: [:name, :_destroy])
+    def create_expense_params
+      params.require(:expense).permit(:description, payers_attributes: [:name , :amount, :exclude, :_destroy], debtors_attributes: [:name, :_destroy])
     end
+
+  def update_expense_params
+    params.require(:expense).permit(:description, payers_attributes: [:id, :name , :amount, :exclude, :_destroy], debtors_attributes: [:id, :name, :_destroy])
+  end
+
 end

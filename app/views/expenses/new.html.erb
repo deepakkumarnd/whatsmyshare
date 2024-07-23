@@ -1,9 +1,5 @@
-<h1>New expense</h1>
-
-<%= render "form", group: @expense_group, expense: @expense %>
-
-<br>
-
-<div>
-  <%= link_to "Back", group_path(@expense_group) %>
+<div class="box">
+  <h1 class="page-title">New expense</h1>
 </div>
+
+<%= render "form", expense: @expense, submit_url: group_expenses_path(@expense_group), http_method: :post, cancel_link: group_path(@expense_group) %>

@@ -3,5 +3,5 @@
     <h1 class="page-title">My Expense groups</h1>
   </div>
 
-  <%= render "form", expense_group: @expense_group, cancel_link: group_index_path %>
+  <%= render "form", expense_group: @expense_group, cancel_link: group_index_path, submit_url: group_index_path, http_method: :post %>
 </div>
