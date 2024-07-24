@@ -13,15 +13,19 @@
     <% end %>
 
     <!-- render templates for associated records forms  -->
-    <%= render "expenses/add_payer_form", builder: form %>
-    <%= render "expenses/add_debtor_form", builder: form %>
+    <%= render "expenses/add_payer_template", builder: form %>
+    <%= render "expenses/add_debtor_template", builder: form %>
 
     <div class="box">
       <%= form.input :description, input_html: { class: "input-text m-2", placeholder: "What's this expense for ?" } %>
     </div>
 
     <div class="box">
-      <div data-expense-form-target="addPayer"></div>
+      <div data-expense-form-target="addPayer">
+        <%= form.simple_fields_for :payers do |f| %>
+          <%= render "expenses/payer_fields", f: f %>
+        <% end %>
+      </div>
       <a data-action="click->expense-form#addPayer" class="link">+ Add payer</a>
     </div>
 
@@ -33,7 +37,11 @@
     </div>
 
     <div class="box">
-      <div data-expense-form-target="addDebtor"></div>
+      <div data-expense-form-target="addDebtor">
+        <%= form.simple_fields_for :debtors do |f| %>
+          <%= render "expenses/debtor_fields", f: f %>
+        <% end %>
+      </div>
       <a data-action="click->expense-form#addDebtor" class="link">+ Add debtor</a>
     </div>
 

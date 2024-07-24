@@ -16,22 +16,9 @@ class ExpensesController < ApplicationController
   def create
     @expense = @expense_group.expenses.new(create_expense_params)
 
-    @expense.amount = @expense.payers.map(&:amount).reduce(:+)
+    service = ExpenseService.instance
 
-    participants_count = @expense.payers.filter { |x| !x.exclude }.length + @expense.debtors.length
-
-    amount_per_participant = @expense.amount / participants_count
-
-    @expense.debtors.each do |debtor|
-      debtor.amount = amount_per_participant
-    end
-
-    @expense.payers.each do |payer|
-      if payer.amount < amount_per_participant
-        diff = amount_per_participant - payer.amount
-        @expense.debtors.build(name: payer.name, amount: diff)
-      end
-    end
+    @expense = service.build_expense(@expense)
 
     respond_to do |format|
       if @expense.save
@@ -44,8 +31,12 @@ class ExpensesController < ApplicationController
 
   # PATCH/PUT /expenses/1 or /expenses/1.json
   def update
+    @expense.assign_attributes(update_expense_params)
+    service = ExpenseService.instance
+    @expense = service.build_expense(@expense)
+
     respond_to do |format|
-      if @expense.update(update_expense_params)
+      if @expense.save
         format.html { redirect_to group_path(@expense_group), notice: "Expense was successfully updated." }
         format.json { render :show, status: :ok, location: @expense }
       else

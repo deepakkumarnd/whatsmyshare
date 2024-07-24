@@ -1,0 +1,5 @@
+<template data-expense-form-target="addDebtorTemplate">
+  <%= builder.simple_fields_for :debtors_attributes, { index: "new-index"} do |f| %>
+    <%= render "expenses/debtor_fields", f: f %>
+  <% end %>
+</template>

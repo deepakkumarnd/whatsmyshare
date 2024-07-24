@@ -9,8 +9,6 @@ export default class extends Controller {
         this.addPayerContainer = this.addPayerTarget;
         this.addDebtorTemplate = this.addDebtorTemplateTarget;
         this.addDebtorContainer = this.addDebtorTarget;
-        this.addPayer();
-        this.addDebtor();
     }
 
     addPayer() {
@@ -29,13 +27,13 @@ export default class extends Controller {
 
     removePayer(event) {
         const input = event.target.parentElement.querySelector(".delete-payer-input")
-        input.value = "1"
+        input.value = "true"
         input.closest(".payer").classList.add("hidden")
     }
 
     removeDebtor(event) {
         const input = event.target.parentElement.querySelector(".delete-debtor-input")
-        input.value = "1"
+        input.value = "true"
         input.closest(".debtor").classList.add("hidden")
     }
 
@@ -43,7 +41,6 @@ export default class extends Controller {
         const timestamp = new Date().getTime();
 
         obj.querySelectorAll("input").forEach((field) => {
-            field.id = new Date().getTime();
             field.name = field.name.replace("new-index", timestamp)
         })
     }
