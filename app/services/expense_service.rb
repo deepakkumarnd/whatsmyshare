@@ -1,6 +1,10 @@
 class ExpenseService
   include Singleton
 
+  Node = Struct.new(:name, :amount)
+  Edge = Struct.new(:from, :to, :amount)
+
+
   def build_expense(expense)
     expense.amount = expense.payers.map(&:amount).reduce(:+)
     participants_count = expense.payers.filter { |x| !x.exclude }.length + expense.debtors.length
@@ -64,5 +68,34 @@ class ExpenseService
     summary_mapping[:debt] = debtors_summary_mapping
     summary_mapping[:payer] = payers_summary_mapping
     summary_mapping
+  end
+
+  def build_action_graph(summary)
+    # list of edges here, the edges indicate an payment from one user to another user
+    graph = []
+
+    sorted_payers = summary[:payer].sort_by { |_name, amount| -amount}.map { |name, amount| Node.new(name, amount)}
+    sorted_debtors = summary[:debt].sort_by { |_name, amount| -amount}.map { |name, amount| Node.new(name, amount)}
+
+    sorted_payers.each do |payer_node|
+      sorted_debtors.each do |debtor_node|
+        # consider this payer as settled if if the payer has to get less than one rupee from others
+        break if payer_node.amount.floor < 1
+        # consider this debtor as settled if he owes less than 1 rupee
+        next if debtor_node.amount.floor < 1
+
+        if payer_node.amount >= debtor_node.amount
+          graph.push(Edge.new(debtor_node.name, payer_node.name, debtor_node.amount))
+          payer_node.amount = payer_node.amount - debtor_node.amount
+          debtor_node.amount = 0
+        else
+          graph.push(Edge.new(debtor_node.name, payer_node.name, payer_node.amount))
+          debtor_node.amount = debtor_node.amount - payer_node.amount
+          payer_node.amount = 0
+        end
+      end
+    end
+
+    graph
   end
 end

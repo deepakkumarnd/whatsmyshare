@@ -36,6 +36,15 @@
   </div>
 
   <div class="box">
+    <p class="page-subtitle">Actions for settlement</p>
+    <ul>
+      <% @action_graph.each do |action| %>
+        <li><span><%= action.from %></span>&nbsp;<span>has to pay</span>&nbsp;<span class="subtext"><%= number_to_currency(action.amount, precision: 2, unit: "Rs. ") %></span> to <span><%= action.to %></span></li>
+      <% end %>
+    </ul>
+  </div>
+
+  <div class="box">
     <div class="page-subtitle">Expenses</div>
     <%= render "expenses/list", expenses: @expense_group.expenses %>
   </div>

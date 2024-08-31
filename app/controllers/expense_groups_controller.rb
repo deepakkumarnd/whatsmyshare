@@ -10,6 +10,7 @@ class ExpenseGroupsController < ApplicationController
   def show
     service = ExpenseService.instance
     @summary = service.build_summary(@expense_group)
+    @action_graph = service.build_action_graph(@summary)
   end
 
   # GET /expense_groups/new
