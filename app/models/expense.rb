@@ -1,6 +1,6 @@
 class Expense < ApplicationRecord
-  has_many :payers, dependent: :delete_all
-  has_many :debtors, dependent: :delete_all
+  has_many :payers, dependent: :destroy
+  has_many :debtors, dependent: :destroy
 
   belongs_to :expense_group
 
