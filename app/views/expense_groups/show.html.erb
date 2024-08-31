@@ -13,7 +13,6 @@
   </div>
 
   <div class="box flex justify-end items-center gap-1">
-    <%= link_to "edit", edit_group_path(@expense_group), class: "link  text-sm" %>
     <%= link_to "settle", "#", class: "link text-sm inline-block" %>
     <%= button_to "delete", group_path(@expense_group), method: :delete, data: { turbo_confirm: "Are you sure want to delete this expense group?" }, class: "link text-sm inline-block" %>
   </div>
