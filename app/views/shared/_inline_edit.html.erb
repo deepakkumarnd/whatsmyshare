@@ -1,0 +1,5 @@
+<template data-inline-edit-target="inlineEditForm">
+  <%= form_with model: resource, url: url,  method: :put do |f| %>
+    <%= f.text_field field_name.to_sym, data: { action: "keydown->inline-edit#cancelEdit" }  %>
+  <% end %>
+</template>

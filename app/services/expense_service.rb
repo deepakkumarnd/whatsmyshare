@@ -4,7 +4,9 @@ class ExpenseService
   def build_expense(expense)
     expense.amount = expense.payers.map(&:amount).reduce(:+)
     participants_count = expense.payers.filter { |x| !x.exclude }.length + expense.debtors.length
-    amount_per_participant = expense.amount / participants_count
+    expense.amount_per_participant = expense.amount / participants_count
+
+    amount_per_participant = expense.amount_per_participant
 
     expense.debtors.each do |debtor|
       debtor.amount = amount_per_participant

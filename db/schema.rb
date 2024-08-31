@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_23_071944) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_30_070142) do
   create_table "debtors", force: :cascade do |t|
     t.string "name"
     t.decimal "amount", precision: 8, scale: 2, default: "0.0"
@@ -32,6 +32,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_23_071944) do
     t.datetime "updated_at", null: false
     t.string "description"
     t.integer "expense_group_id", null: false
+    t.decimal "amount_per_participant", default: "0.0"
     t.index ["expense_group_id"], name: "index_expenses_on_expense_group_id"
   end
 
