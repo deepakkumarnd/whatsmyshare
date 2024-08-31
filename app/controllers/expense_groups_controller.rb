@@ -8,6 +8,8 @@ class ExpenseGroupsController < ApplicationController
 
   # GET /expense_groups/1 or /expense_groups/1.json
   def show
+    service = ExpenseService.instance
+    @summary = service.build_summary(@expense_group)
   end
 
   # GET /expense_groups/new
