@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_08_30_070142) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_31_124727) do
   create_table "debtors", force: :cascade do |t|
     t.string "name"
     t.decimal "amount", precision: 8, scale: 2, default: "0.0"
@@ -24,6 +24,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_30_070142) do
     t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "is_settled", default: false
   end
 
   create_table "expenses", force: :cascade do |t|

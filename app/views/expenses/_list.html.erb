@@ -7,8 +7,10 @@
           <span class="subtext"><%= number_to_currency(expense.amount, precision: 2, unit: "Rs. ") %></span>
         </div>
         <div class="flex gap-2">
-          <%= link_to "edit", edit_group_expense_path(@expense_group, expense), class: "link" %>
-          <%= button_to "delete", group_expense_path(@expense_group, expense), class: "link", method: :delete, data: { turbo_confirm: "Are you sure want to delete this expense ?" } %>
+          <% if !@expense_group.settled? %>
+            <%= link_to "Edit", edit_group_expense_path(@expense_group, expense), class: "link" %>
+            <%= button_to "Delete", group_expense_path(@expense_group, expense), class: "link", method: :delete, data: { turbo_confirm: "Are you sure want to delete this expense ?" } %>
+          <% end %>
         </div>
       </div>
     </li>

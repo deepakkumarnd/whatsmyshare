@@ -3,18 +3,30 @@
     <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
   <% end %>
 
+  <% if @expense_group.settled? %>
+    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block">Settled</p>
+  <% end %>
+
   <div class="flex justify-between items-center box" data-controller="inline-edit">
-    <%= render "shared/inline_edit", resource: @expense_group, url: group_path(@expense_group), field_name: "description" %>
-    <h1 class="page-title" data-inline-edit-target="groupTitle" data-action="dblclick->inline-edit#doubleClick"><span><%= @expense_group.description %></span></h1>
+    <% if @expense_group.settled? %>
+      <h1 class="page-title"><span><%= @expense_group.description %></span></h1>
+    <% else %>
+      <%= render "shared/inline_edit", resource: @expense_group, url: group_path(@expense_group), field_name: "description" %>
+      <h1 class="page-title" data-inline-edit-target="groupTitle" data-action="dblclick->inline-edit#doubleClick"><span><%= @expense_group.description %></span></h1>
+    <% end %>
     <div class="flex gap-2 items-center">
       <%= link_to "All", group_index_path, class: "link text-sm" %>
-      <%= link_to "Add new expense", new_group_expense_path(@expense_group), class: "link" %>
+      <% if policy(@expense_group).add_new_expense? %>
+        <%= link_to "Add new expense", new_group_expense_path(@expense_group), class: "link" %>
+      <% end %>
     </div>
   </div>
 
-  <div class="box flex justify-end items-center gap-1">
-    <%= link_to "settle", "#", class: "link text-sm inline-block" %>
-    <%= button_to "delete", group_path(@expense_group), method: :delete, data: { turbo_confirm: "Are you sure want to delete this expense group?" }, class: "link text-sm inline-block" %>
+  <div class="box flex justify-end items-center gap-2">
+    <% if policy(@expense_group).settle? %>
+      <%= button_to "Settle", settle_group_path(@expense_group), method: :put, class: "link text-sm inline-block" %>
+    <% end %>
+    <%= button_to "Delete", group_path(@expense_group), method: :delete, data: { turbo_confirm: "Are you sure want to delete this expense group?" }, class: "link text-sm inline-block" %>
   </div>
 
   <div class="box">
@@ -46,6 +58,6 @@
 
   <div class="box">
     <div class="page-subtitle">Expenses</div>
-    <%= render "expenses/list", expenses: @expense_group.expenses %>
+    <%= render "expenses/list", expenses: @expense_group.expenses, settled: @expense_group.settled? %>
   </div>
 </div>

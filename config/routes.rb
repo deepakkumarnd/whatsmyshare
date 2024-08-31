@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
   resources :expense_groups, as: "group" do
     resources :expenses, except: [:index]
+    member do
+      put :settle
+    end
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

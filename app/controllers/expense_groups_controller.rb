@@ -1,5 +1,5 @@
 class ExpenseGroupsController < ApplicationController
-  before_action :set_expense_group, only: %i[ show edit update destroy ]
+  before_action :set_expense_group, only: %i[ show edit update settle destroy ]
 
   # GET /expense_groups or /expense_groups.json
   def index
@@ -40,6 +40,18 @@ class ExpenseGroupsController < ApplicationController
     respond_to do |format|
       if @expense_group.update(expense_group_params)
         format.html { redirect_to group_path(@expense_group), notice: "Expense group was successfully updated." }
+        format.json { render :show, status: :ok, location: @expense_group }
+      else
+        format.html { render :edit, status: :unprocessable_entity }
+        format.json { render json: @expense_group.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def settle
+    respond_to do |format|
+      if @expense_group.update(is_settled: true)
+        format.html { redirect_to group_path(@expense_group), notice: "Expense has been marked as settled." }
         format.json { render :show, status: :ok, location: @expense_group }
       else
         format.html { render :edit, status: :unprocessable_entity }
