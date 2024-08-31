@@ -19,18 +19,19 @@
   </div>
 
   <div class="box">
-    <p>Debtors</p>
+    <p class="page-subtitle">Debtors</p>
     <ul>
     <% @expense_group.summary[:debt].each do |name, amount| %>
-      <li class="flex gap-4"><div><%= name %></div><div>owe</div><div>Rs. <%= amount %></div></li>
+      <li><span><%= name %></span>&nbsp;<span>owe</span>&nbsp;<span class="subtext"><%= number_to_currency(amount, precision: 2, unit: "Rs. ") %></span></li>
     <% end %>
     </ul>
   </div>
 
   <div class="box">
-    <p>Payers</p>
+    <p class="page-subtitle">Payers</p>
+    <ul>
     <% @expense_group.summary[:payer].each do |name, amount| %>
-      <li class="flex gap-4"><div><%= name %></div><div>has to get</div><div>Rs. <%= amount %></div></li>
+      <li><span><%= name %></span>&nbsp;<span>has to get</span>&nbsp;<span class="subtext"><%= number_to_currency(amount, precision: 2, unit: "Rs. ") %></span></li>
     <% end %>
     </ul>
   </div>

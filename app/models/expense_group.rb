@@ -22,6 +22,20 @@ class ExpenseGroup < ApplicationRecord
       end
     end
 
+    # keep only the net amount inflow/outflow
+    (debtors_summary_mapping.keys & payers_summary_mapping.keys).each do |key|
+      if payers_summary_mapping[key] > debtors_summary_mapping[key]
+        payers_summary_mapping[key] = payers_summary_mapping[key] - debtors_summary_mapping[key]
+        debtors_summary_mapping.delete(key)
+      elsif payers_summary_mapping[key] < debtors_summary_mapping[key]
+        debtors_summary_mapping[key] = debtors_summary_mapping[key] - payers_summary_mapping[key]
+        payers_summary_mapping.delete(key)
+      else
+        payers_summary_mapping.delete(key)
+        debtors_summary_mapping.delete(key)
+      end
+    end
+
     summary_mapping[:debt] = debtors_summary_mapping
     summary_mapping[:payer] = payers_summary_mapping
     summary_mapping
