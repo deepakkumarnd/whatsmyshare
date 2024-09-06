@@ -1,4 +1,10 @@
 Rails.application.routes.draw do
+  resources :stocks do
+    member do
+      put :upload_history
+    end
+  end
+
   resources :expense_groups, as: "group" do
     resources :expenses, except: [:index]
     member do
