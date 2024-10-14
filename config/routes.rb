@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :pages
+
   resources :stocks do
     member do
       put :upload_history
@@ -18,5 +20,5 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   # Defines the root path route ("/")
-  root "expense_groups#index"
+  root "pages#index"
 end
